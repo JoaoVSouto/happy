@@ -12,6 +12,16 @@ class OrphanagesController {
     return res.json(orphanages);
   }
 
+  static async show(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const orphanagesRepository = getRepository(Orphanage);
+
+    const orphanage = await orphanagesRepository.findOneOrFail(id);
+
+    return res.json(orphanage);
+  }
+
   static async create(req: Request, res: Response) {
     const {
       name,
