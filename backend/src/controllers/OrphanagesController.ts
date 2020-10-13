@@ -35,6 +35,11 @@ class OrphanagesController {
 
     const orphanagesRepository = getRepository(Orphanage);
 
+    const requestImages = req.files as Express.Multer.File[];
+    const images = requestImages.map((requestImage) => ({
+      path: requestImage.filename,
+    }));
+
     const orphanage = orphanagesRepository.create({
       name,
       latitude,
@@ -43,6 +48,7 @@ class OrphanagesController {
       instructions,
       opening_hours,
       open_on_weekends,
+      images,
     });
 
     await orphanagesRepository.save(orphanage);
