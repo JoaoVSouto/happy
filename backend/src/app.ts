@@ -3,6 +3,7 @@ import 'express-async-errors';
 import path from 'path';
 
 import express, { Express } from 'express';
+import helmet from 'helmet';
 import cors from 'cors';
 
 import './database/connection';
@@ -22,6 +23,7 @@ class App {
   }
 
   private middlewares() {
+    this.server.use(helmet());
     this.server.use(cors());
     this.server.use(express.json());
     this.server.use(
