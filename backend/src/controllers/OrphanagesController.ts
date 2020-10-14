@@ -3,6 +3,8 @@ import { getRepository } from 'typeorm';
 
 import Orphanage from '../models/Orphanage';
 
+import orphanageView from '../views/orphanages_view';
+
 class OrphanagesController {
   static async index(req: Request, res: Response) {
     const orphanagesRepository = getRepository(Orphanage);
@@ -11,7 +13,7 @@ class OrphanagesController {
       relations: ['images'],
     });
 
-    return res.json(orphanages);
+    return res.json(orphanageView.renderMany(orphanages));
   }
 
   static async show(req: Request, res: Response) {
@@ -23,7 +25,7 @@ class OrphanagesController {
       relations: ['images'],
     });
 
-    return res.json(orphanage);
+    return res.json(orphanageView.render(orphanage));
   }
 
   static async create(req: Request, res: Response) {
