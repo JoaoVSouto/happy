@@ -95,6 +95,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        transition: background-color 0.3s;
+
+        &:hover,
+        &:focus {
+          background-color: #17d6eb;
+        }
       }
     }
 
