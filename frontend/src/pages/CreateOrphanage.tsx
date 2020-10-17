@@ -1,8 +1,11 @@
 import React, { useCallback, useState, FormEvent, ChangeEvent } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 
 import { FiPlus } from 'react-icons/fi';
+
+import api from '../services/api';
 
 import mapIcon from '../utils/mapIcon';
 
@@ -11,6 +14,8 @@ import '../styles/pages/create-orphanage.scss';
 import Sidebar from '../components/Sidebar';
 
 export default function CreateOrphanage() {
+  const history = useHistory();
+
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
 
   const [name, setName] = useState('');
@@ -46,23 +51,41 @@ export default function CreateOrphanage() {
   }, []);
 
   const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       const { latitude, longitude } = position;
 
-      console.log({
-        position,
-        name,
-        latitude,
-        longitude,
-        about,
-        instructions,
-        opening_hours,
-        open_on_weekends,
+      const data = new FormData();
+
+      data.append('name', name);
+      data.append('latitude', String(latitude));
+      data.append('longitude', String(longitude));
+      data.append('about', about);
+      data.append('instructions', instructions);
+      data.append('opening_hours', opening_hours);
+      data.append('open_on_weekends', String(open_on_weekends));
+
+      images.forEach((image) => {
+        data.append('images', image);
       });
+
+      await api.post('orphanages', data);
+
+      alert('Cadastro realizado com sucesso!');
+
+      history.push('/app');
     },
-    [position, name, about, instructions, opening_hours, open_on_weekends]
+    [
+      position,
+      name,
+      about,
+      instructions,
+      opening_hours,
+      open_on_weekends,
+      images,
+      history,
+    ]
   );
 
   return (
@@ -75,7 +98,7 @@ export default function CreateOrphanage() {
             <legend>Dados</legend>
 
             <Map
-              center={[-27.2092052, -49.6401092]}
+              center={[-5.8850813, -35.2038551]}
               style={{ width: '100%', height: 280 }}
               zoom={15}
               onClick={handleMapClick}
