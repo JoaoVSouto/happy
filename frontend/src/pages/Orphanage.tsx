@@ -33,6 +33,7 @@ export default function Orphanage() {
   const { id } = useParams<IOrphanageParams>();
 
   const [orphanage, setOrphanage] = useState<IOrphanage>();
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -51,11 +52,19 @@ export default function Orphanage() {
 
       <main>
         <div className="orphanage-details">
-          <img src={orphanage.images[0].url} alt={orphanage.name} />
+          <img
+            src={orphanage.images[activeImageIndex].url}
+            alt={orphanage.name}
+          />
 
           <div className="images">
-            {orphanage.images.map((image) => (
-              <button key={image.id} className="active" type="button">
+            {orphanage.images.map((image, index) => (
+              <button
+                key={image.id}
+                className={activeImageIndex === index ? 'active' : ''}
+                type="button"
+                onClick={() => setActiveImageIndex(index)}
+              >
                 <img src={image.url} alt={orphanage.name} />
               </button>
             ))}
