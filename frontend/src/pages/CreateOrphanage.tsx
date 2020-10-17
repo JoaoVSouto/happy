@@ -32,15 +32,20 @@ export default function CreateOrphanage() {
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
+      const { latitude, longitude } = position;
+
       console.log({
         position,
         name,
+        latitude,
+        longitude,
         about,
         instructions,
         opening_hours,
+        open_on_weekends,
       });
     },
-    [position, name, about, instructions, opening_hours]
+    [position, name, about, instructions, opening_hours, open_on_weekends]
   );
 
   return (
@@ -95,11 +100,23 @@ export default function CreateOrphanage() {
             <div className="input-block">
               <label htmlFor="images">Fotos</label>
 
-              <div className="uploaded-image"></div>
-
-              <button className="new-image">
-                <FiPlus size={24} color="#15b6d6" />
-              </button>
+              <div className="images-container">
+                <button type="button" className="new-image">
+                  <FiPlus size={24} color="#15b6d6" />
+                </button>
+                <button type="button" className="new-image">
+                  <FiPlus size={24} color="#15b6d6" />
+                </button>
+                <button type="button" className="new-image">
+                  <FiPlus size={24} color="#15b6d6" />
+                </button>
+                <button type="button" className="new-image">
+                  <FiPlus size={24} color="#15b6d6" />
+                </button>
+                <button type="button" className="new-image">
+                  <FiPlus size={24} color="#15b6d6" />
+                </button>
+              </div>
             </div>
           </fieldset>
 
