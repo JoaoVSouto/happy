@@ -3,6 +3,8 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Landing from './pages/Landing';
 import OrphanagesMap from './pages/OrphanagesMap';
+import Orphanage from './pages/Orphanage';
+import CreateOrphanage from './pages/CreateOrphanage';
 
 const Routes: React.FC = () => {
   return (
@@ -10,6 +12,10 @@ const Routes: React.FC = () => {
       <Switch>
         <Route path="/" exact component={Landing} />
         <Route path="/app" component={OrphanagesMap} />
+
+        <Route path="/orphanages/create" component={CreateOrphanage} />
+        <Route path="/orphanages/:id" component={Orphanage} />
+
         <Redirect from="*" to="/" />
       </Switch>
     </BrowserRouter>
