@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, FormEvent } from 'react';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 
@@ -17,6 +17,7 @@ export default function CreateOrphanage() {
   const [about, setAbout] = useState('');
   const [instructions, setInstructions] = useState('');
   const [opening_hours, setOpeningHours] = useState('');
+  const [open_on_weekends, setOpenOnWeekends] = useState(true);
 
   const handleMapClick = useCallback((e: LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
@@ -27,12 +28,27 @@ export default function CreateOrphanage() {
     });
   }, []);
 
+  const handleSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      console.log({
+        position,
+        name,
+        about,
+        instructions,
+        opening_hours,
+      });
+    },
+    [position, name, about, instructions, opening_hours]
+  );
+
   return (
     <div id="page-create-orphanage">
       <Sidebar />
 
       <main>
-        <form className="create-orphanage-form">
+        <form className="create-orphanage-form" onSubmit={handleSubmit}>
           <fieldset>
             <legend>Dados</legend>
 
@@ -112,10 +128,20 @@ export default function CreateOrphanage() {
               <label htmlFor="open_on_weekends">Atende fim de semana</label>
 
               <div className="button-select">
-                <button type="button" className="active">
+                <button
+                  type="button"
+                  className={open_on_weekends ? 'active' : ''}
+                  onClick={() => setOpenOnWeekends(true)}
+                >
                   Sim
                 </button>
-                <button type="button">Não</button>
+                <button
+                  type="button"
+                  className={!open_on_weekends ? 'active' : ''}
+                  onClick={() => setOpenOnWeekends(false)}
+                >
+                  Não
+                </button>
               </div>
             </div>
           </fieldset>
