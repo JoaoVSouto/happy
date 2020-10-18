@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   View,
@@ -15,6 +15,14 @@ import { RectButton } from 'react-native-gesture-handler';
 export default function OrphanageData() {
   const route = useRoute();
 
+  const [name, setName] = useState('');
+  const [about, setAbout] = useState('');
+  const [instructions, setInstructions] = useState('');
+  const [opening_hours, setOpeningHours] = useState('');
+  const [open_on_weekends, setOpenOnWeekends] = useState(true);
+
+  function handleCreateOrphanage() {}
+
   return (
     <ScrollView
       style={styles.container}
@@ -23,10 +31,15 @@ export default function OrphanageData() {
       <Text style={styles.title}>Dados</Text>
 
       <Text style={styles.label}>Nome</Text>
-      <TextInput style={styles.input} />
+      <TextInput style={styles.input} value={name} onChangeText={setName} />
 
       <Text style={styles.label}>Sobre</Text>
-      <TextInput style={[styles.input, { height: 110 }]} multiline />
+      <TextInput
+        style={[styles.input, { height: 110 }]}
+        multiline
+        value={about}
+        onChangeText={setAbout}
+      />
 
       {/* <Text style={styles.label}>Whatsapp</Text>
       <TextInput style={styles.input} /> */}
@@ -39,20 +52,31 @@ export default function OrphanageData() {
       <Text style={styles.title}>Visitação</Text>
 
       <Text style={styles.label}>Instruções</Text>
-      <TextInput style={[styles.input, { height: 110 }]} multiline />
+      <TextInput
+        style={[styles.input, { height: 110 }]}
+        multiline
+        value={instructions}
+        onChangeText={setInstructions}
+      />
 
-      <Text style={styles.label}>Horario de visitas</Text>
-      <TextInput style={styles.input} />
+      <Text style={styles.label}>Horário de visitas</Text>
+      <TextInput
+        style={styles.input}
+        value={opening_hours}
+        onChangeText={setOpeningHours}
+      />
 
       <View style={styles.switchContainer}>
         <Text style={styles.label}>Atende final de semana?</Text>
         <Switch
           thumbColor="#fff"
           trackColor={{ false: '#ccc', true: '#39CC83' }}
+          value={open_on_weekends}
+          onValueChange={setOpenOnWeekends}
         />
       </View>
 
-      <RectButton style={styles.nextButton} onPress={() => {}}>
+      <RectButton style={styles.nextButton} onPress={handleCreateOrphanage}>
         <Text style={styles.nextButtonText}>Cadastrar</Text>
       </RectButton>
     </ScrollView>
