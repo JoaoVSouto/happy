@@ -28,9 +28,12 @@ const OrphanagesMap: React.FC = () => {
     })();
   }, []);
 
-  const handleNavigateToOrphanageDetails = useCallback(() => {
-    navigation.navigate('OrphanageDetails');
-  }, [navigation]);
+  const handleNavigateToOrphanageDetails = useCallback(
+    (id: number) => {
+      navigation.navigate('OrphanageDetails', { id });
+    },
+    [navigation]
+  );
 
   const handleNavigateToCreateOrphanage = useCallback(() => {
     navigation.navigate('SelectMapPosition');
@@ -61,7 +64,10 @@ const OrphanagesMap: React.FC = () => {
               longitude: orphanage.longitude,
             }}
           >
-            <Callout tooltip onPress={handleNavigateToOrphanageDetails}>
+            <Callout
+              tooltip
+              onPress={() => handleNavigateToOrphanageDetails(orphanage.id)}
+            >
               <View style={styles.calloutContainer}>
                 <Text style={styles.calloutText}>{orphanage.name}</Text>
               </View>
@@ -71,7 +77,9 @@ const OrphanagesMap: React.FC = () => {
       </MapView>
 
       <View style={styles.footer}>
-        <Text style={styles.footerText}>2 orfanatos encontrados</Text>
+        <Text style={styles.footerText}>
+          {orphanages.length} orfanatos encontrados
+        </Text>
 
         <RectButton
           style={styles.createOrphanageButton}
