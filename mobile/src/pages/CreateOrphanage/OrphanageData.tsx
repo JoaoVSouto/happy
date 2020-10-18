@@ -7,21 +7,67 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
 import { RectButton } from 'react-native-gesture-handler';
 
+interface IOrphanageDataRouteParams {
+  position: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
 export default function OrphanageData() {
   const route = useRoute();
+  const params = route.params as IOrphanageDataRouteParams;
 
   const [name, setName] = useState('');
   const [about, setAbout] = useState('');
   const [instructions, setInstructions] = useState('');
   const [opening_hours, setOpeningHours] = useState('');
   const [open_on_weekends, setOpenOnWeekends] = useState(true);
+  const [images, setImages] = useState<string[]>([]);
 
-  function handleCreateOrphanage() {}
+  function handleCreateOrphanage() {
+    const { latitude, longitude } = params.position;
+
+    console.log({
+      name,
+      about,
+      instructions,
+      opening_hours,
+      open_on_weekends,
+      latitude,
+      longitude,
+    });
+  }
+
+  async function handleSelectImages() {
+    const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Eita! Precisamos de acesso às suas fotos...');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
+
+    if (result.cancelled) {
+      return;
+    }
+
+    const { uri: image } = result;
+
+    setImages([...images, image]);
+  }
 
   return (
     <ScrollView
@@ -45,7 +91,18 @@ export default function OrphanageData() {
       <TextInput style={styles.input} /> */}
 
       <Text style={styles.label}>Fotos</Text>
-      <TouchableOpacity style={styles.imagesInput} onPress={() => {}}>
+
+      <View style={styles.uploadedImagesContainer}>
+        {images.map((image) => (
+          <Image
+            key={image}
+            source={{ uri: image }}
+            style={styles.uploadedImage}
+          />
+        ))}
+      </View>
+
+      <TouchableOpacity style={styles.imagesInput} onPress={handleSelectImages}>
         <Feather name="plus" size={24} color="#15B6D6" />
       </TouchableOpacity>
 
@@ -119,6 +176,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginBottom: 16,
     textAlignVertical: 'top',
+  },
+
+  uploadedImagesContainer: {
+    flexDirection: 'row',
+  },
+
+  uploadedImage: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    marginBottom: 32,
+    marginRight: 8,
   },
 
   imagesInput: {
