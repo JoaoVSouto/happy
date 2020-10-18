@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiX } from 'react-icons/fi';
 
 import api from '../services/api';
 
@@ -48,6 +48,11 @@ export default function CreateOrphanage() {
       URL.createObjectURL(image)
     );
     setPreviewImages(selectedImagesPreview);
+  }, []);
+
+  const handleDeleteImage = useCallback((imageIndex: number) => {
+    setImages((state) => state.filter((_, idx) => idx !== imageIndex));
+    setPreviewImages((state) => state.filter((_, idx) => idx !== imageIndex));
   }, []);
 
   const handleSubmit = useCallback(
@@ -141,8 +146,17 @@ export default function CreateOrphanage() {
               <label htmlFor="images">Fotos</label>
 
               <div className="images-container">
-                {previewImages.map((image) => (
-                  <img key={image} src={image} alt={name} />
+                {previewImages.map((image, index) => (
+                  <div className="image-container" key={image}>
+                    <button
+                      type="button"
+                      className="close-button"
+                      onClick={() => handleDeleteImage(index)}
+                    >
+                      <FiX color="#ff669d" size={24} />
+                    </button>
+                    <img src={image} alt={name} />
+                  </div>
                 ))}
 
                 <label htmlFor="image[]" className="new-image">
