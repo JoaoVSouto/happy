@@ -6,9 +6,10 @@ import { Feather } from '@expo/vector-icons';
 
 interface IProps {
   title: string;
+  showCancel?: boolean;
 }
 
-const Header: React.FC<IProps> = ({ title }) => {
+const Header: React.FC<IProps> = ({ title, showCancel = true }) => {
   const navigation = useNavigation();
 
   function handleGoBackToAppHomepage() {
@@ -23,9 +24,13 @@ const Header: React.FC<IProps> = ({ title }) => {
 
       <Text style={styles.title}>{title}</Text>
 
-      <BorderlessButton onPress={handleGoBackToAppHomepage}>
-        <Feather name="x" size={24} color="#ff669d" />
-      </BorderlessButton>
+      {showCancel ? (
+        <BorderlessButton onPress={handleGoBackToAppHomepage}>
+          <Feather name="x" size={24} color="#ff669d" />
+        </BorderlessButton>
+      ) : (
+        <View />
+      )}
     </View>
   );
 };
